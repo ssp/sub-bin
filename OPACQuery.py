@@ -34,7 +34,6 @@ if len(sys.argv) > 1:
 			xsl = etree.XSLT(xslXML)
 		except:
 			sys.stderr.write("Could not read XSLT at " + sys.argv[2] + ", ignoring it.\n")
-			print xsl
 
 		if len(sys.argv) > 3:
 			queryParameter = sys.argv[3]
