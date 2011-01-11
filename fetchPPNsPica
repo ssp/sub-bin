@@ -1,0 +1,14 @@
+#! /bin/sh
+
+# Receive name of file with one PPN per line and
+# fetch the record for each of the PPNs.
+cat $1 | xargs -L 1 --delimiter="\n" ~/bin/fetchPPNPica
+
+# Delete empty files
+find . -size 0 -print0 | xargs -0 rm
+
+# Create an XML file containing all the records.
+echo '<?xml version="1.0" encoding="UTF-8"?>' > gesamt.xml
+echo '<records>' >> gesamt.xml
+cat [0-9]*.xml | grep -v "version..1.0" >> gesamt.xml
+echo '</records>' >> gesamt.xml

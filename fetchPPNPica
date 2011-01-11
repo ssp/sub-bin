@@ -1,0 +1,4 @@
+#! /bin/sh
+echo "$1"
+curl --progress-bar "http://gso.gbv.de/sru/DB=2.1/?query=pica.ppn%3D%22$1%22&version=1.1&operation=searchRetrieve&recordSchema=pica&recordPacking=xml" | xsltproc ~/bin/XSLT/extractRecordFromSRUReply.xsl - | xmllint --format - > "$1.xml"
+
