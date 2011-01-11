@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 21
+/svn/!svn/ver/1/trunk
+END
+test-json.xml
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/3/trunk/test-json.xml
+END
+xml2json.xslt
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/3/trunk/xml2json.xslt
+END
+COPYRIGHT.txt
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/2/trunk/COPYRIGHT.txt
+END
+test-json2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/3/trunk/test-json2.xml
+END
+test-js.xml
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/3/trunk/test-js.xml
+END
+xml2js.xslt
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/3/trunk/xml2js.xslt
+END
+test-js2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/3/trunk/test-js2.xml
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/3/trunk/README.txt
+END
