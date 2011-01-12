@@ -38,7 +38,7 @@
 			<h1>GOK</h1>
 			<ul>
 				<xsl:for-each select="SHORTTITLE">
-					<xsl:sort select="record/datafield[@tag='045A']/subfield[@code='a']"/>
+					<xsl:sort select="translate(record/datafield[@tag='045A']/subfield[@code='a'], ' X', '')"/>
 					<xsl:element name="li">
 						<xsl:attribute name="style">margin-left: <xsl:value-of select="record/datafield[@tag='009B']/subfield[@code='a']"/>em;</xsl:attribute>
 						<xsl:value-of select="record/datafield[@tag='044E']/subfield[@code='a']"/>
