@@ -87,9 +87,9 @@ class xml2json {
 			return(EMPTY_STR);
 		}
 		
-		$simpleXmlRootElementName = $simpleXmlElementObject->getName();
 		// Uncomment this line to see the inner details of the SimpleXMLElement object.
 		if (DEBUG) {
+			// $simpleXmlRootElementName = $simpleXmlElementObject->getName();
 			// var_dump($simpleXmlRootElementName);
 			// var_dump($simpleXmlElementObject);
 		}	
