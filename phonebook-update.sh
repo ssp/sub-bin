@@ -17,7 +17,7 @@ ooconvert --encoding latin-1 --force $fileName  /home/ssp/Downloads/Telefonbuch.
 
 cd /home/ssp/Downloads
 
-xsltproc --html --stringparam fileName "$fileName" ../Dropbox/SUB/Phonebook-Cleaner.xsl Telefonbuch.html > Telefonbuch-clean.html
+xsltproc --html --stringparam fileName "$fileName" ~/bin/XSLT/Phonebook-Cleaner.xsl Telefonbuch.html > Telefonbuch-clean.html
 
 scp Telefonbuch-clean.html vlib.sub.uni-goettingen.de:/home/vlib/demo-sites/ssp/phone/phone.html
 
