@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 #coding=utf-8
 """
-Script doing OPAC queries to get short titles,
-join the results into a single XML document
-and possibly process it with XSL.
+Script doing OPAC queries to get full titles,
+possibly apply XSL and write each record to its own file.
+The file name is determined by the PPN in field 003@ $0 of each record.
 
-Can be used to create PPN lists from queries with extractPPNs.xsl.
+Can be used to download records from the Opac.
+
+Using MarcXML2TurboMarc.xsl on them appears to be a good idea.
 
 January 2011
 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
@@ -51,28 +53,28 @@ while firstHit < totalHits:
 	URL += "/FRST="  + str(firstHit)
 	if queryParameter != None:
 		URL += "/" + queryParameter
+	URL += "/PRS=XML"
 	URL += "/CMD?ACT=SRCHA&IKT=1016&SRT=YOP&TRM=" + query
 	print URL
 	
 	xmlString = urllib.urlopen(URL).read()
 	xml = etree.fromstring(xmlString)
 
-	queryResults = xml.xpath("//SET/*")
-	for queryResult in queryResults:
-		PPN = queryResult.xpath("@PPN")[0]
-		print PPN
-		records = queryResult.xpath("//record")
-
-		result = records[0]
-		
-		if xsl != None:
-			result = xsl(result)
-
-		PPNFile = open (PPN + ".xml", "w")
-		PPNFile.write(etree.tostring(result, encoding="utf-8", method="xml"))
-		PPNFile.close()
-		
 	totalHits = int(xml.xpath("//SET/@hits")[0])
 	sys.stderr.write("loaded: " + str(min(firstHit + hitsPerQuery - 1, totalHits)) + " of " + str(totalHits) + "\n")
+
+	records = xml.xpath("//record")
+
+	for record in records:
+		PPN = record.xpath("datafield[@tag='003@']/subfield[@code='0']")[0].text
+		print PPN
+
+		if xsl != None:
+			record = xsl(record)
+
+		PPNFile = open (PPN + ".xml", "w")
+		PPNFile.write(etree.tostring(record, encoding="utf-8", method="xml"))
+		PPNFile.close()
+		
 	firstHit += hitsPerQuery
 
