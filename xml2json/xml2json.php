@@ -214,17 +214,7 @@ class xml2json {
            		// Decrease the recursion depth by one.
            		$recursionDepth--;
        		} // End of foreach($simpleXmlElementObject as $key=>$value) {		
-
-       		if ($recursionDepth == 0) {
-				// That is it. We are heading to the exit now.
-				// Set the XML root element name as the root [top-level] key of 
-				// the associative array that we are going to return to the caller of this
-				// recursive function.
-				$tempArray = $resultArray;
-				$resultArray = array();
-				$resultArray[$callerProvidedSimpleXmlElementObject->getName()] = $tempArray;
-       		}
-       		
+     		
        		return ($resultArray);
    		} else {
    			// We are now looking at either the XML attribute text or 
