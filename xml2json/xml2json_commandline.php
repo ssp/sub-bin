@@ -29,6 +29,8 @@ Jan/14/2011
 adapted by Sven-S. Porst <porst@sub.uni-goettingen.de>
 ============================================================================================
 */
+ini_set('memory_limit', '1024M');
+
 require_once("xml2json.php");
 
 // Filename from where XML contents are to be read.
