@@ -13,7 +13,7 @@ cd /home/ssp/sub1/USER/user/INTRANET
 fileName=`(ls -1 Tele*xls | tail -1)`
 echo "File $fileName"
 
-ooconvert --encoding latin-1 --force $fileName  /home/ssp/Downloads/Telefonbuch.html; 
+ooconvert --force $fileName  /home/ssp/Downloads/Telefonbuch.html; 
 
 cd /home/ssp/Downloads
 
