@@ -10,10 +10,10 @@ fi
 
 cd /home/ssp/sub1/USER/user/INTRANET
 
-fileName=`(ls -1 Tele*xls | tail -1)`
+fileName=`(ls -1t Tele*xls | head -1)`
 echo "File $fileName"
 
-ooconvert --force $fileName  /home/ssp/Downloads/Telefonbuch.html; 
+libreoffice -nologo -convert-to html:Telefonbuch -outdir /home/ssp/Downloads/ $fileName;
 
 cd /home/ssp/Downloads
 
