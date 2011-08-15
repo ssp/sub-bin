@@ -1,0 +1,4 @@
+#!/bin/sh
+cd /tmp
+
+wget "http://vlib.sub.uni-goettingen.de/vlib-test/?tx_pazpar2_pazpar2[__referrer][extensionName]=Pazpar2&tx_pazpar2_pazpar2[queryString]=$1"
