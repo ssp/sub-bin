@@ -1,2 +1,3 @@
 #!/bin/sh
-curl --netrc -X POST -H "Content-Type: application/json" -d @$1 http://vlib.sub.uni-goettingen.de/couch/pica/_bulk_docs
+echo @$1
+curl --netrc -X POST -H "Content-Type: application/json" -d @$2 http://vlib.sub.uni-goettingen.de/couch/$1/_bulk_docs
