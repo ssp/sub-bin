@@ -29,7 +29,7 @@ records = xml.xpath("//r")
 
 for record in records:
 	# Pica record
-	PPNField = record.xpath(u"//d003Ä/s0")
+	PPNField = record.xpath(u"d003Ä/s0")
 	id = None
 	if len(PPNField) > 0:
 		id = PPNField[0].text
