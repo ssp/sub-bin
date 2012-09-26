@@ -15,7 +15,64 @@ Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
 
 import urllib
 import sys
+import os
 from lxml import etree
+import simplejson
+
+
+NamespaceMap = {None: "http://www.indexdata.com/turbomarc"}
+
+
+
+""" 
+	stolen from xml2json 
+	https://github.com/mutaku/xml2json
+	added simplistic stripping of namespace from the tag names
+"""
+def elem_to_internal(elem, strip=1):
+
+    """Convert an Element into an internal dictionary (not JSON!)."""
+
+    d = {}
+    for key, value in elem.attrib.items():
+        d['@'+key] = value
+
+    # loop over subelements to merge them
+    for subelem in elem:
+        v = elem_to_internal(subelem, strip=strip)
+        tag = subelem.tag
+        tagWithoutNamespace = tag .rpartition('}')[2]
+        value = v[tag]
+        try:
+            # add to existing list for this tag
+            d[tagWithoutNamespace].append(value)
+        except AttributeError:
+            # turn existing entry into a list
+            d[tagWithoutNamespace] = [d[tagWithoutNamespace], value]
+        except KeyError:
+            # add a new non-list entry
+            d[tagWithoutNamespace] = value
+    text = elem.text
+    tail = elem.tail
+    if strip:
+        # ignore leading and trailing whitespace
+        if text: text = text.strip()
+        if tail: tail = tail.strip()
+
+    if tail:
+        d['#tail'] = tail
+
+    if d:
+        # use #text element if other attributes exist
+        if text: d["#text"] = text
+    else:
+        # text is the value if no attributes
+        d = text or None
+    return {elem.tag: d}
+
+
+
+
 
 
 query = None
@@ -59,7 +116,8 @@ while firstHit < totalHits:
 	
 	xmlString = urllib.urlopen(URL).read()
 	xml = etree.fromstring(xmlString)
-
+	bulkJSON = {'docs': []}
+	
 	totalHits = int(xml.xpath("//SET/@hits")[0])
 	sys.stderr.write("loaded: " + str(min(firstHit + hitsPerQuery - 1, totalHits)) + " of " + str(totalHits) + "\n")
 
@@ -67,14 +125,53 @@ while firstHit < totalHits:
 
 	for record in records:
 		PPN = record.xpath("datafield[@tag='003@']/subfield[@code='0']")[0].text
-		print PPN
 
 		if xsl != None:
 			record = xsl(record)
+			
+		folder1 = PPN[-4:-2]
+		folder2 = PPN[-2:]
+		subfolder = folder1 + '/' + folder2
+		if not os.path.exists(subfolder):
+		    os.makedirs(subfolder)
+		
+		PPNXML = etree.tostring(record, encoding="utf-8", method="xml")
+		PPNXMLFile = open (subfolder + '/' + PPN + ".xml", "w")
+		PPNXMLFile.write(PPNXML)
+		PPNXMLFile.close()
+		
+		if hasattr(record, 'getroot'):
+			record = record.getroot()
+		JSONInternal = elem_to_internal(record, strip=1)
+		if len(JSONInternal) == 1:
+			JSONInternal = JSONInternal.values()[0]
+		
+		""" Add ID for CouchDB to JSON """
+		JSONInternal['_id'] = PPN
+		PPNJSONFile = open (subfolder + '/' + PPN + ".js", "w")
+		PPNJSONFile.write(simplejson.dumps(JSONInternal))
+		PPNJSONFile.close()
+		bulkJSON['docs'] += [JSONInternal]
+		print 'wrote ' + PPN + ' .xml/.js'
+		
+	
+	number = '%08u' % firstHit
+	folder1 = number[-8:-6]
+	folder2 = number[-6:-4]
+	subfolder = '_bulk/' + folder1 + '/' + folder2
+	if not os.path.exists(subfolder):
+	    os.makedirs(subfolder)
+	bulkXMLFile = open(subfolder + '/' + number + '.xml', 'w')
+	bulkXMLFile.write(xmlString)
+	bulkXMLFile.close()
 
-		PPNFile = open (PPN + ".xml", "w")
-		PPNFile.write(etree.tostring(record, encoding="utf-8", method="xml"))
-		PPNFile.close()
+	bulkJSONFile = open(subfolder + '/' + number + '.js', 'w')
+	bulkJSONFile.write(simplejson.dumps(bulkJSON))
+	bulkJSONFile.close()
+	print 'wrote records _bulk/' + number + '.xml/.js'
+
+
+	
 		
 	firstHit += hitsPerQuery
 
