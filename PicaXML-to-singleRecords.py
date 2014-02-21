@@ -10,10 +10,10 @@ import json
 
 filename = sys.argv[1]
 
-xslXML2 = etree.parse("/home/ssp/bin/XSLT/Remove-Namespaces.xsl")
+xslXML2 = etree.parse("/Users/ssp/SUB/bin/XSLT/Remove-Namespaces.xsl")
 xsl2 = etree.XSLT(xslXML2)
 
-xslXML = etree.parse("/home/ssp/bin/XSLT/MarcXML2TurboMarc.xsl")
+xslXML = etree.parse("/Users/ssp/SUB/bin/XSLT/MarcXML2TurboMarc.xsl")
 xsl = etree.XSLT(xslXML)
 
 
