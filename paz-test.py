@@ -3,7 +3,9 @@ import urllib
 import re
 import time
 
-pazURL = 'http://10.0.5.99/pazpar2/search.pz2?command='
+pazURL = 'http://localhost/pazpar2/search.pz2?command='
+service = 'vifanord'
+waitTime = 5 # seconds
 index = 0
 queries = ['lkl=ia%206', 'lkl=pb', 'lkl=pg', 'lkl=ic%206']
 
@@ -11,7 +13,7 @@ while True:
 	print time.strftime('%x %X')
 	workingIndex = index % len(queries)
 	query = queries[workingIndex]
-	initURL = pazURL + 'init&service=test'
+	initURL = pazURL + 'init&service=' + service
 	f = urllib.urlopen(initURL)
 	result = f.read()
 	f.close()
@@ -25,11 +27,8 @@ while True:
 	result = f.read()
 	f.close()
 	print 'searching for: ' + query
-	print ''
+	print result
 
-	time.sleep(60)
+	time.sleep(waitTime)
 	
 	index = index + 1
-	
-	
-	
